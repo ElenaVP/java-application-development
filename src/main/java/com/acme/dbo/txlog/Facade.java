@@ -26,9 +26,6 @@ public class Facade {
     }
 
     public static void flushString () {
-       /* if (stringCounter == 0) {
-            return;
-        }*/
         if (stringCounter == 1) {
             printToConsole(lastUsedString);
         } else
@@ -41,13 +38,15 @@ public class Facade {
     }
 
     public static void log(int message) {
+        int overflowNormalization = 0;
         if (checkIfTypeChanged("int")) {
             flushString();
         }
-        /* if (message == 0) {
-            flushInteger();
-        }*/
-        intAccumulator = intAccumulator + message;
+        if ((intAccumulator + message) < intAccumulator) {
+            printToConsole(String.valueOf(Integer.MAX_VALUE));
+            overflowNormalization = Integer.MAX_VALUE;
+        }
+        intAccumulator = intAccumulator + message - overflowNormalization;
         lastUsedType = "int";
     }
 
