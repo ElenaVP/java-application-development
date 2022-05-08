@@ -33,11 +33,11 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         Facade.log(2);
         Facade.log("str 2");
         Facade.log(0);
-        //Facade.flushInteger();
+        Facade.flushInteger();
         //endregion
 
         //region then
-        assertSysoutEquals(
+        assertSysoutContains(
             "str 1\r\n" +
             "3\r\n" +
             "str 2\r\n" +
@@ -57,6 +57,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         Facade.log("str 3");
         Facade.log("str 3");
         Facade.log("str 3");
+        Facade.flushString();
         //endregion
 
         //region then
