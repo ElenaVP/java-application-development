@@ -10,6 +10,7 @@ public class Facade {
     public static String lastUsedType;
     public static String lastUsedString;
     public static int stringCounter;
+    public static byte byteAccumulator;
 
     public static boolean checkIfTypeChanged(String currentType) {
         if  ((lastUsedType == null) || (currentType.equals(lastUsedType))) {
@@ -19,13 +20,31 @@ public class Facade {
         }
     }
 
-    public static void flushInteger () {
+    public static void flushState() {
+        if ("int".equals(lastUsedType)) {
+            flushInteger();
+        }
+        if ("String".equals(lastUsedType)) {
+            flushString();
+        }
+        if ("byte".equals(lastUsedType)) {
+            flushByte();
+        }
+    }
+
+    public static void flushInteger() {
         printToConsole(Integer.valueOf(intAccumulator).toString());
         intAccumulator = 0;
         lastUsedType = null;
     }
 
-    public static void flushString () {
+    public static void flushByte() {
+        printToConsole(Byte.valueOf(byteAccumulator).toString());
+        byteAccumulator = 0;
+        lastUsedType = null;
+    }
+
+    public static void flushString() {
         if (stringCounter == 1) {
             printToConsole(lastUsedString);
         } else
@@ -40,7 +59,7 @@ public class Facade {
     public static void log(int message) {
         int overflowNormalization = 0;
         if (checkIfTypeChanged("int")) {
-            flushString();
+            flushState();
         }
         if ((intAccumulator + message) < intAccumulator) {
             printToConsole(String.valueOf(Integer.MAX_VALUE));
@@ -51,7 +70,16 @@ public class Facade {
     }
 
     public static void log(byte message) {
-        printToConsole(decorateMessage(message));
+        byte overflowNormalization = 0;
+        if (checkIfTypeChanged("byte")) {
+            flushState();
+        }
+        if ((byte)(byteAccumulator + message) < (byte) byteAccumulator) {
+            printToConsole(String.valueOf(Byte.MAX_VALUE));
+            overflowNormalization = (byte) Byte.MAX_VALUE;
+        }
+        byteAccumulator = (byte) (byteAccumulator + message - overflowNormalization);
+        lastUsedType = "byte";
     }
 
     public static void log(char message) {
@@ -60,7 +88,7 @@ public class Facade {
 
     public static void log(String message) {
         if (checkIfTypeChanged("String")) {
-            flushInteger();
+            flushState();
         }
         boolean stringHasSameValueOrNull = (lastUsedString==null)||(message.equals(lastUsedString));
         if (!stringHasSameValueOrNull) {
