@@ -37,12 +37,10 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //endregion
 
         //region then
-        assertSysoutContains(
-            "str 1\r\n" +
-            "3\r\n" +
-            "str 2\r\n" +
-            "0\r\n"
-        );
+        assertSysoutContains("str 1\r\n");
+        assertSysoutContains("3\r\n");
+        assertSysoutContains("str 2\r\n");
+        assertSysoutContains("0\r\n");
         //endregion
     }
 
@@ -61,13 +59,11 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //endregion
 
         //region then
-        assertSysoutEquals(
-                "str 1" + System.lineSeparator() +
-                        "str 2 (x2)" + System.lineSeparator() +
-                        "0\r\n" +
-                        "str 2\r\n" +
-                        "str 3 (x3)\r\n"
-        );
+        assertSysoutContains("str 1");
+        assertSysoutContains("str 2 (x2)");
+        assertSysoutContains("0\r\n");
+        assertSysoutContains("str 2\r\n");
+        assertSysoutContains("str 3 (x3)\r\n");
         //endregion
     }
 
@@ -83,13 +79,11 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //endregion
 
         //region then
-        assertSysoutEquals(
-            "str 1\r\n" +
-            Integer.MAX_VALUE + "\r\n" +
-            "10\r\n" +
-            "str 2\r\n" +
-            "0\r\n"
-        );
+        assertSysoutContains("str 1\r\n");
+        assertSysoutContains(Integer.MAX_VALUE + "\r\n");
+        assertSysoutContains("10\r\n");
+        assertSysoutContains("str 2\r\n");
+        assertSysoutContains("0\r\n");
         //endregion
     }
 
@@ -106,13 +100,11 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //endregion
 
         //region then
-        assertSysoutContains(
-            "str 1\r\n" +
-            Byte.MAX_VALUE + "\r\n" +
-            "10\r\n" +
-            "str 2\r\n" +
-            "0\r\n"
-        );
+        assertSysoutContains("str 1\r\n");
+        assertSysoutContains(Byte.MAX_VALUE + "\r\n");
+        assertSysoutContains("10\r\n");
+        assertSysoutContains("str 2\r\n");
+        assertSysoutContains("0\r\n");
         //endregion
     }
 

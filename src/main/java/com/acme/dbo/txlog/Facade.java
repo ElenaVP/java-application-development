@@ -33,23 +33,23 @@ public class Facade {
     }
 
     public static void flushInteger() {
-        printToConsole(Integer.valueOf(intAccumulator).toString());
+        printToConsole(decorateMessage(intAccumulator));
         intAccumulator = 0;
         lastUsedType = null;
     }
 
     public static void flushByte() {
-        printToConsole(Byte.valueOf(byteAccumulator).toString());
+        printToConsole(decorateMessage((byte)byteAccumulator));
         byteAccumulator = 0;
         lastUsedType = null;
     }
 
     public static void flushString() {
         if (stringCounter == 1) {
-            printToConsole(lastUsedString);
+            printToConsole(decorateMessage(lastUsedString));
         } else
         if (stringCounter != 0) {
-            printToConsole(lastUsedString + " (x" + stringCounter + ")");
+            printToConsole(decorateMessage(lastUsedString + " (x" + stringCounter + ")"));
         }
         lastUsedString = null;
         stringCounter = 0;
@@ -61,8 +61,8 @@ public class Facade {
         if (checkIfTypeChanged("int")) {
             flushState();
         }
-        if ((intAccumulator + message) < intAccumulator) {
-            printToConsole(String.valueOf(Integer.MAX_VALUE));
+        if (message > (Integer.MAX_VALUE - intAccumulator)) {
+            printToConsole(decorateMessage(Integer.MAX_VALUE));
             overflowNormalization = Integer.MAX_VALUE;
         }
         intAccumulator = intAccumulator + message - overflowNormalization;
@@ -74,8 +74,8 @@ public class Facade {
         if (checkIfTypeChanged("byte")) {
             flushState();
         }
-        if ((byte)(byteAccumulator + message) < (byte) byteAccumulator) {
-            printToConsole(String.valueOf(Byte.MAX_VALUE));
+        if (message > (byte) (Byte.MAX_VALUE - byteAccumulator)) {
+            printToConsole(decorateMessage((byte)Byte.MAX_VALUE));
             overflowNormalization = (byte) Byte.MAX_VALUE;
         }
         byteAccumulator = (byte) (byteAccumulator + message - overflowNormalization);
