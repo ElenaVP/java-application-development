@@ -1,7 +1,5 @@
 package com.acme.dbo.txlog;
 
-import java.util.Objects;
-
 import static com.acme.dbo.txlog.ConsolePrinter.printToConsole;
 import static com.acme.dbo.txlog.Decorator.decorateMessage;
 
@@ -20,65 +18,27 @@ public class Facade {
         }
     }
 
-    public static void flushState() {
-        if ("int".equals(lastUsedType)) {
-            flushInteger();
+    public static void flushStateIfRequired(String currentType) {
+        if (checkIfTypeChanged(currentType)) {
+            StateFlusher.flushState();
         }
-        if ("String".equals(lastUsedType)) {
-            flushString();
-        }
-        if ("byte".equals(lastUsedType)) {
-            flushByte();
-        }
-    }
-
-    public static void flushInteger() {
-        printToConsole(decorateMessage(intAccumulator));
-        intAccumulator = 0;
-        lastUsedType = null;
-    }
-
-    public static void flushByte() {
-        printToConsole(decorateMessage((byte)byteAccumulator));
-        byteAccumulator = 0;
-        lastUsedType = null;
-    }
-
-    public static void flushString() {
-        if (stringCounter == 1) {
-            printToConsole(decorateMessage(lastUsedString));
-        } else
-        if (stringCounter != 0) {
-            printToConsole(decorateMessage(lastUsedString + " (x" + stringCounter + ")"));
-        }
-        lastUsedString = null;
-        stringCounter = 0;
-        lastUsedType = null;
     }
 
     public static void log(int message) {
-        int overflowNormalization = 0;
-        if (checkIfTypeChanged("int")) {
-            flushState();
-        }
+        flushStateIfRequired("int");
         if (message > (Integer.MAX_VALUE - intAccumulator)) {
-            printToConsole(decorateMessage(Integer.MAX_VALUE));
-            overflowNormalization = Integer.MAX_VALUE;
+            StateFlusher.flushInteger(Integer.MAX_VALUE);
         }
-        intAccumulator = intAccumulator + message - overflowNormalization;
+        intAccumulator = intAccumulator + message;
         lastUsedType = "int";
     }
 
     public static void log(byte message) {
-        byte overflowNormalization = 0;
-        if (checkIfTypeChanged("byte")) {
-            flushState();
-        }
+        flushStateIfRequired("byte");
         if (message > (byte) (Byte.MAX_VALUE - byteAccumulator)) {
-            printToConsole(decorateMessage((byte)Byte.MAX_VALUE));
-            overflowNormalization = (byte) Byte.MAX_VALUE;
+            StateFlusher.flushByte(Byte.MAX_VALUE);
         }
-        byteAccumulator = (byte) (byteAccumulator + message - overflowNormalization);
+        byteAccumulator = (byte) (byteAccumulator + message);
         lastUsedType = "byte";
     }
 
@@ -87,12 +47,10 @@ public class Facade {
     }
 
     public static void log(String message) {
-        if (checkIfTypeChanged("String")) {
-            flushState();
-        }
+        flushStateIfRequired("String");
         boolean stringHasSameValueOrNull = (lastUsedString==null)||(message.equals(lastUsedString));
         if (!stringHasSameValueOrNull) {
-            flushString();
+            StateFlusher.flushString();
         }
         stringCounter ++;
         lastUsedType="String";
