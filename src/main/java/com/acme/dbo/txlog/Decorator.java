@@ -29,4 +29,8 @@ public class Decorator {
     public static String decorateMessage(Object message) {
         return (OBJECT_PREFIX + ": " + message);
     }
+
+    public static String decorateMessage(String prefix, String message) {
+        return (prefix + message);
+    }
 }

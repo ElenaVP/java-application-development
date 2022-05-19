@@ -64,4 +64,34 @@ public class Facade {
     public static void log(Object message) {
         printToConsole(decorateMessage(message));
     }
+
+    public static void log(int[] arrayMessage) {
+        StringBuilder message = new StringBuilder("{");
+        for (int current: arrayMessage) {
+            message.append(current);
+            message.append(", ");
+        }
+        message.delete(message.length()-2, message.length());
+        message.append("}");
+        printToConsole(decorateMessage("primitives array: ", message.toString()));
+    }
+
+    /*
+
+
+    public static void log (int[][] arrayMessage) {
+        StringBuilder message = new StringBuilder("{");
+        int outerArrayLength = arrayMessage.length;
+        int innerArrayLength =
+        for (int rowCounter = 0; rowCounter <= outerArrayLength; rowCounter += 1) {
+            message.append("{");
+            for (int columnCounter = 0; columnCounter <= arrayMessage[0].length(); columnCounter += 1) {
+                message.append(arrayMessage[rowCounter][columnCounter]);
+                message.append(", ");
+            }
+        }
+        printToConsole(decorateMessage("primitives matrix: ", message.toString()));
+    }
+
+     */
 }
