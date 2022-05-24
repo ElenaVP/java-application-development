@@ -1,55 +1,46 @@
 package com.acme.dbo.txlog;
 
-import static com.acme.dbo.txlog.ConsolePrinter.printToConsole;
-import static com.acme.dbo.txlog.Decorator.decorateMessage;
+import com.acme.dbo.txlog.message.ByteMessage;
+import com.acme.dbo.txlog.message.IntMessage;
+import com.acme.dbo.txlog.message.StringMessage;
+
 
 public class StateFlusher {
+    private ConsolePrinter printer;
 
+    public StateFlusher(ConsolePrinter printer) {
+        this.printer = printer;
+    }
 
-    public static void flushState() {
-        if ("int".equals(Facade.lastUsedType)) {
+    public void flushState() {
+        if ("int".equals(LogService.lastUsedType)) {
             flushInteger();
         }
-        if ("String".equals(Facade.lastUsedType)) {
+        if ("String".equals(LogService.lastUsedType)) {
             flushString();
         }
-        if ("byte".equals(Facade.lastUsedType)) {
+        if ("byte".equals(LogService.lastUsedType)) {
             flushByte();
         }
+        LogService.lastUsedType = null;
     }
 
-    public static void flushInteger() {
-        printToConsole(Decorator.decorateMessage(Facade.intAccumulator));
-        Facade.intAccumulator = 0;
-        Facade.lastUsedType = null;
+    public void flushInteger() {
+        printer.printToConsole(IntMessage.getDecoratedAccumulatedMessage());
+        IntMessage.accumulator = 0;
+
     }
 
-    public static void flushInteger(Integer numberToFlush) {
-        printToConsole(Decorator.decorateMessage(numberToFlush));
-        Facade.intAccumulator = Facade.intAccumulator - numberToFlush;
+    public void flushByte() {
+        printer.printToConsole(ByteMessage.getDecoratedAccumulatedMessage());
+        ByteMessage.accumulator = 0;
+        //LogService.lastUsedType = null;
     }
 
-    public static void flushByte() {
-        printToConsole(decorateMessage((byte) Facade.byteAccumulator));
-        Facade.byteAccumulator = 0;
-        Facade.lastUsedType = null;
-    }
-
-    public static void flushByte(Byte numberToFlush) {
-        printToConsole(decorateMessage((byte) numberToFlush));
-        Facade.byteAccumulator = (byte) (Facade.byteAccumulator - numberToFlush);
-    }
-
-
-    public static void flushString() {
-        if (Facade.stringCounter == 1) {
-            printToConsole(Decorator.decorateMessage(Facade.lastUsedString));
-        } else
-        if (Facade.stringCounter != 0) {
-            printToConsole(decorateMessage(Facade.lastUsedString + " (x" + Facade.stringCounter + ")"));
-        }
-        Facade.lastUsedString = null;
-        Facade.stringCounter = 0;
-        Facade.lastUsedType = null;
+    public void flushString() {
+        printer.printToConsole(StringMessage.getDecoratedAccumulatedMessage());
+        StringMessage.lastUsedString = null;
+        StringMessage.stringCounter = 0;
+        //LogService.lastUsedType = null;
     }
 }
