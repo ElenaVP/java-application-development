@@ -11,23 +11,43 @@ public class Facade {
     }
 */
     public static void log(char message) {
-        logService.log(new CharMessage(message));
+        try {
+            logService.log(new CharMessage(message));
+        } catch (LogOperationException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void log(int message) {
-        logService.log(new IntMessage(message));
+        try {
+            logService.log(new IntMessage(message));
+        } catch (LogOperationException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void log(String message) {
-        logService.log(new StringMessage(message));
+        try {
+            logService.log(new StringMessage(message));
+        } catch (LogOperationException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void log(boolean message) {
-        logService.log(new BooleanMessage(message));
+            try {
+                logService.log(new BooleanMessage(message));
+            } catch (LogOperationException e) {
+                e.printStackTrace();
+            }
     }
 
     public static void clearState() {
-        logService.saveState();
+        try {
+            logService.saveState();
+        } catch (LogOperationException e) {
+            e.printStackTrace();
+        }
     }
 
  /*   public static void log(Object message) {
