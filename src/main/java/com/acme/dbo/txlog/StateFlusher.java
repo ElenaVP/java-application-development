@@ -2,45 +2,44 @@ package com.acme.dbo.txlog;
 
 import com.acme.dbo.txlog.message.ByteMessage;
 import com.acme.dbo.txlog.message.IntMessage;
+import com.acme.dbo.txlog.message.Message;
 import com.acme.dbo.txlog.message.StringMessage;
+import com.acme.dbo.txlog.saver.ConsolePrinter;
+import com.acme.dbo.txlog.saver.Saver;
 
 
 public class StateFlusher {
-    private ConsolePrinter printer;
+    private Saver saver;
 
-    public StateFlusher(ConsolePrinter printer) {
-        this.printer = printer;
+    public StateFlusher(Saver saver) {
+        this.saver = saver;
     }
-
-    public void flushState() {
+/*
+       public void flushState() {
         if ("int".equals(LogService.lastUsedType)) {
             flushInteger();
         }
         if ("String".equals(LogService.lastUsedType)) {
             flushString();
         }
-        if ("byte".equals(LogService.lastUsedType)) {
-            flushByte();
-        }
         LogService.lastUsedType = null;
     }
 
     public void flushInteger() {
-        printer.printToConsole(IntMessage.getDecoratedAccumulatedMessage());
+        saver.save(IntMessage.getDecoratedAccumulatedMessage());
         IntMessage.accumulator = 0;
-
-    }
-
-    public void flushByte() {
-        printer.printToConsole(ByteMessage.getDecoratedAccumulatedMessage());
-        ByteMessage.accumulator = 0;
-        //LogService.lastUsedType = null;
     }
 
     public void flushString() {
-        printer.printToConsole(StringMessage.getDecoratedAccumulatedMessage());
+        saver.save(StringMessage.getDecoratedAccumulatedMessage());
         StringMessage.lastUsedString = null;
         StringMessage.stringCounter = 0;
-        //LogService.lastUsedType = null;
     }
+
+    public void flushMessage(Message message) {
+        saver.save(message.getDecoratedMessage());
+        LogService.lastUsedType = null;
+        LogService.currentMessage = null;
+    }
+    */
 }

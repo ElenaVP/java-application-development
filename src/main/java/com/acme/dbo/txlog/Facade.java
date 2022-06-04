@@ -5,11 +5,11 @@ import com.acme.dbo.txlog.message.*;
 public class Facade {
     public static LogService logService = new LogService();
 
-
+/*
     public static  void log(byte message) {
         logService.log(new ByteMessage(message));
     }
-
+*/
     public static void log(char message) {
         logService.log(new CharMessage(message));
     }
@@ -26,7 +26,11 @@ public class Facade {
         logService.log(new BooleanMessage(message));
     }
 
-    public static void log(Object message) {
+    public static void clearState() {
+        logService.saveState();
+    }
+
+ /*   public static void log(Object message) {
         logService.log(new ObjectMessage(message));
     }
 
@@ -41,7 +45,9 @@ public class Facade {
     public static void flushString () {
         logService.getFlusher().flushString();
     }
-/*
+
+
+
     public static void log(int[] arrayMessage) {
         logService.log(new ArrayMessage(arrayMessage));
     }

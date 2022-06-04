@@ -28,11 +28,11 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     public void shouldLogInteger() throws IOException {
         //region when
         Facade.log(1);
-        Facade.flushInteger();
+        Facade.clearState();
         Facade.log(0);
-        Facade.flushInteger();
+        Facade.clearState();
         Facade.log(-1);
-        Facade.flushInteger();
+        Facade.clearState();
         //endregion
 
         //region then
@@ -40,7 +40,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         assertSysoutEquals("primitive: 1\r\nprimitive: 0\r\nprimitive: -1\r\n");
         //endregion
     }
-
+/*
     @Test
     public void shouldLogByte() throws IOException {
         //region when
@@ -76,13 +76,14 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //endregion
     }
 
-/*
+*/
 
     @Test
     public void shouldLogString() throws IOException {
         //region when
         Facade.log("test string 1");
         Facade.log("other str");
+        Facade.clearState();
         //endregion
 
         //region then
@@ -92,8 +93,8 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //endregion
     }
 
-*/
 
+/*
     @Test
     public void shouldLogBoolean() throws IOException {
         //region when
@@ -119,7 +120,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         assertSysoutContains("@");
         //endregion
     }
-    /*
+
     TODO: implement Logger solution to match specification as tests
     */
 }

@@ -1,22 +1,26 @@
 package com.acme.dbo.txlog;
 
 import com.acme.dbo.txlog.message.*;
+import com.acme.dbo.txlog.saver.ConsolePrinter;
+import com.acme.dbo.txlog.saver.Saver;
 
 public class LogService {
 
-    private ConsolePrinter printer;
+    private Saver saver;
     private StateFlusher flusher;
     public static String lastUsedType;
+    private Message currentMessage;
 
     public LogService() {
-        this.printer = new ConsolePrinter();
-        this.flusher = new StateFlusher(printer);
+        this.saver = new ConsolePrinter();
+        this.flusher = new StateFlusher(saver);
+        this.currentMessage = new DefaultMessage();
     }
-
+/*
     public StateFlusher getFlusher() {
         return flusher;
-    }
-
+    }*/
+/*
     public boolean checkIfTypeChanged(String currentType) {
         if  ((lastUsedType == null) || (currentType.equals(lastUsedType))) {
             return false;
@@ -26,11 +30,28 @@ public class LogService {
     }
 
     public void flushStateIfRequired(String currentType) {
-        if (checkIfTypeChanged(currentType)) {
+        boolean ifTypeChanged = (lastUsedType == null) || (currentType.equals(lastUsedType));
+        if (!ifTypeChanged) {
             flusher.flushState();
         }
     }
+*/
+    public void log(Message message) {
+        if (currentMessage instanceof DefaultMessage) {
+            currentMessage = message;
+        } else if (message.isSame(currentMessage)) {
+            currentMessage = message.accumulate(currentMessage);
+        } else {
+            saver.save(currentMessage);
+            currentMessage = message;
+        }
+    }
 
+    public void saveState() {
+        saver.save(currentMessage);
+        currentMessage = new DefaultMessage();
+    }
+/*
     public void log(IntMessage message) {
         flushStateIfRequired("int");
         message.accumulate(flusher);
@@ -47,27 +68,26 @@ public class LogService {
         lastUsedType="String";
     }
 
+
     public void log(CharMessage message) {
-        printer.printToConsole(message.getDecoratedMessage());
+        saver.save(message.getDecoratedMessage());
 
     }
 
     public void log(BooleanMessage message) {
-        printer.printToConsole(message.getDecoratedMessage());
+        saver.save(message.getDecoratedMessage());
 
     }
 
     public void log(ObjectMessage message) {
-        printer.printToConsole(message.getDecoratedMessage());
+        saver.save(message.getDecoratedMessage());
 
     }
 
     public void log(ByteMessage message) {
-        flushStateIfRequired("byte");
-        message.accumulate(flusher);
-        lastUsedType = "byte";
+        saver.save(message.getDecoratedMessage());
     }
-
+    */
     /*
     public  void log(int[] arrayMessage) {
         StringBuilder message = new StringBuilder("{");
