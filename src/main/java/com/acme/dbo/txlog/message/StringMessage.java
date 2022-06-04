@@ -13,11 +13,7 @@ public class StringMessage implements Message{
         this.message = message;
         this.counter = counter;
     }
-/*
-    public String getMessage() {
-        return message;
-    }
-*/
+
     @Override
     public String getDecoratedMessage() {
         if (counter == 1) {

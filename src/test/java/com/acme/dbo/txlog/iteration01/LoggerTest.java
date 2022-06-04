@@ -1,8 +1,6 @@
 package com.acme.dbo.txlog.iteration01;
 
 import com.acme.dbo.txlog.Facade;
-import com.acme.dbo.txlog.LogService;
-import com.acme.dbo.txlog.StateFlusher;
 import com.acme.dbo.txlog.SysoutCaptureAndAssertionAbility;
 import org.junit.After;
 import org.junit.Before;

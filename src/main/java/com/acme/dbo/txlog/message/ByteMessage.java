@@ -1,7 +1,5 @@
 package com.acme.dbo.txlog.message;
 
-import com.acme.dbo.txlog.StateFlusher;
-
 public class ByteMessage {
     private byte message;
 

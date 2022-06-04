@@ -1,7 +1,5 @@
 package com.acme.dbo.txlog.message;
 
-import com.acme.dbo.txlog.StateFlusher;
-
 public class IntMessage implements Message{
     private int message;
     public static int accumulator;
@@ -9,12 +7,6 @@ public class IntMessage implements Message{
     public IntMessage(int message) {
         this.message = message;
     }
-/*
-    @Override
-    public Message getMessage() {
-        return null;
-    }
-*/
 
     @Override
     public String getDecoratedMessage() {
@@ -32,10 +24,5 @@ public class IntMessage implements Message{
             return false;
         }
     }
-/*
-    public static String getDecoratedAccumulatedMessage() {
-        return "primitive: " + accumulator;
-    }
 
- */
 }
