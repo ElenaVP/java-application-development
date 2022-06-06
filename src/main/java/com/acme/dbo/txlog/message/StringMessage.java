@@ -1,15 +1,17 @@
 package com.acme.dbo.txlog.message;
 
-public class StringMessage implements Message{
+public class StringMessage extends PrefixDecoratedMessage implements Message{
     private String message;
     private int counter;
 
     public StringMessage(String message) {
+        super("string: ");
         this.message = message;
         this.counter = 1;
     }
 
     public StringMessage(String message, int counter) {
+        super("string: ");
         this.message = message;
         this.counter = counter;
     }
@@ -17,12 +19,12 @@ public class StringMessage implements Message{
     @Override
     public String getDecoratedMessage() {
         if (counter == 1) {
-            return "string: " + message;
+            return super.getDecoratedMessage(message);
         } else
         if (counter != 0) {
-            return message + " (x" + counter + ")";
+            return super.getDecoratedMessage(message + " (x" + counter + ")");
         } else {
-            return message;
+            return super.getDecoratedMessage(message);
         }
     }
 

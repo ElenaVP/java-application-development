@@ -1,16 +1,17 @@
 package com.acme.dbo.txlog.message;
 
-public class IntMessage implements Message{
+public class IntMessage extends PrefixDecoratedMessage implements Message{
     private int message;
     public static int accumulator;
 
     public IntMessage(int message) {
+        super("primitive: ");
         this.message = message;
     }
 
     @Override
     public String getDecoratedMessage() {
-        return "primitive: " + message;
+        return super.getDecoratedMessage(String.valueOf(message));
     }
 
     public Message accumulate(Message currentMessage) {

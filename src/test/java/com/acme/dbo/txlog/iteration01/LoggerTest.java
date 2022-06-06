@@ -39,16 +39,6 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //endregion
     }
 
-    @Test
-    public void shouldLogIntegerWithException() throws IOException {
-        //region when
-        Facade.log(null);
-        //endregion
-
-        //region then
-        assertSysoutEquals("primitive: 1\n");
-        //endregion
-    }
 /*
     @Test
     public void shouldLogByte() throws IOException {
